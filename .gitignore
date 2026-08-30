@@ -1,0 +1,15 @@
+# Secrets — never commit API keys
+pocket_tts/.env
+*.env
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Node / frontend build artifacts
+frontend/node_modules/
+frontend/dist/
+
+# Qwen Code working files
+.qwen/

@@ -1,0 +1,385 @@
+/* ---------------------------------------------------------------------------
+   Companion overlay — Claude-inspired theme
+   warm cream surfaces, terracotta accent, soft shadows, springy motion
+--------------------------------------------------------------------------- */
+
+:root {
+  --claude-surface: rgba(242, 239, 231, 0.88);
+  --claude-surface-hover: rgba(226, 220, 207, 0.9);
+  --claude-ink: #3d3929;
+  --claude-ink-soft: rgba(61, 57, 41, 0.62);
+  --claude-accent: #d97757;
+  --claude-accent-deep: #c15f3c;
+  --claude-accent-glow: rgba(217, 119, 87, 0.35);
+  --claude-border: rgba(61, 57, 41, 0.14);
+  --shadow-float:
+    0 14px 34px rgba(50, 44, 30, 0.18), 0 3px 8px rgba(50, 44, 30, 0.1);
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+  user-select: none;
+  cursor: default;
+  font-family:
+    "Segoe UI Variable Text",
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+#stage-holder,
+#stage-holder canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ------------------------------------------------------------- toolbar --- */
+
+#controls {
+  position: absolute;
+  top: clamp(8px, 3%, 16px);
+  right: clamp(8px, 3%, 16px);
+  z-index: 10; /* above the container-edit outline */
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px;
+  border-radius: 18px;
+  background: var(--claude-surface);
+  border: 1px solid var(--claude-border);
+  box-shadow: var(--shadow-float);
+  backdrop-filter: blur(14px) saturate(1.25);
+  animation: toolbar-in 0.3s var(--ease-out);
+}
+
+#controls.hidden {
+  display: none;
+}
+
+@keyframes toolbar-in {
+  from {
+    opacity: 0;
+    transform: translateX(16px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* ------------------------------------------------------------- buttons --- */
+
+#controls button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(30px, 9.5vmin, 38px);
+  height: clamp(30px, 9.5vmin, 38px);
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--claude-ink);
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    transform 0.22s var(--spring),
+    box-shadow 0.22s ease;
+  animation: btn-in 0.34s var(--spring) backwards;
+}
+
+#controls button:nth-child(1) {
+  animation-delay: 0.04s;
+}
+#controls button:nth-child(2) {
+  animation-delay: 0.08s;
+}
+#controls button:nth-child(3) {
+  animation-delay: 0.12s;
+}
+#controls button:nth-child(4) {
+  animation-delay: 0.16s;
+}
+#controls button:nth-child(5) {
+  animation-delay: 0.2s;
+}
+#controls button:nth-child(6) {
+  animation-delay: 0.24s;
+}
+#controls button:nth-child(7) {
+  animation-delay: 0.28s;
+}
+#controls button:nth-child(8) {
+  animation-delay: 0.32s;
+}
+#controls button:nth-child(9) {
+  animation-delay: 0.36s;
+}
+
+@keyframes btn-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+#controls button:hover {
+  background: var(--claude-surface-hover);
+  color: var(--claude-accent-deep);
+  transform: translateY(-1px) scale(1.06);
+}
+
+#controls button:active {
+  transform: translateY(0) scale(0.92);
+  transition-duration: 0.08s;
+}
+
+#controls button:focus-visible {
+  outline: 2px solid var(--claude-accent);
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------- icons --- */
+
+#controls .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#controls svg {
+  width: clamp(15px, 4.8vmin, 18px);
+  height: clamp(15px, 4.8vmin, 18px);
+  stroke-width: 2.1;
+  transition: transform 0.3s var(--spring);
+}
+
+/* per-button icon micro-animations */
+#btn-pin:hover svg {
+  transform: rotate(-18deg);
+}
+#btn-track:hover svg {
+  transform: translate(2px, -3px);
+}
+#btn-model:hover svg {
+  transform: rotate(140deg);
+}
+#btn-bigger:hover svg {
+  transform: scale(1.25);
+}
+#btn-smaller:hover svg {
+  transform: scale(0.8);
+}
+#btn-voice:hover svg {
+  transform: scale(1.15) rotate(-8deg);
+}
+#btn-close:hover svg {
+  transform: rotate(90deg) scale(1.1);
+}
+
+/* toggle state: filled terracotta while the toggle is on (pin / track /
+   edit modes / voice) */
+#btn-pin.active,
+#btn-track.active,
+#btn-edit.active,
+#btn-move.active,
+#btn-voice.active {
+  background: var(--claude-accent);
+  color: #fff7f2;
+  box-shadow: 0 4px 14px var(--claude-accent-glow);
+}
+
+#btn-pin.active:hover,
+#btn-track.active:hover,
+#btn-edit.active:hover,
+#btn-move.active:hover,
+#btn-voice.active:hover {
+  background: var(--claude-accent-deep);
+  color: #fff7f2;
+}
+
+#btn-pin .icon-off,
+#btn-track .icon-off,
+#btn-voice .icon-off {
+  display: none;
+}
+#btn-pin:not(.active) .icon-on,
+#btn-track:not(.active) .icon-on,
+#btn-voice:not(.active) .icon-on {
+  display: none;
+}
+#btn-pin:not(.active) .icon-off,
+#btn-track:not(.active) .icon-off,
+#btn-voice:not(.active) .icon-off {
+  display: flex;
+}
+
+/* close gets a warmer hover */
+#btn-close:hover {
+  background: rgba(217, 119, 87, 0.16);
+}
+
+/* Separate Exit from the other controls so it reads as a distinct action. */
+#btn-close {
+  margin-top: 3px;
+}
+#btn-close::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 5px;
+  right: 5px;
+  height: 1px;
+  background: var(--claude-border);
+}
+
+/* per-button icon micro-animations for the edit mode buttons */
+#btn-edit:hover svg {
+  transform: scale(1.18);
+}
+#btn-move:hover svg {
+  transform: translateY(-2px);
+}
+
+/* ---------------------------------------------- container edit modes --- */
+
+#container-edit {
+  position: absolute;
+  z-index: 5;
+  border: 2px dashed var(--claude-accent);
+  border-radius: 10px;
+  background: rgba(217, 119, 87, 0.06);
+  box-shadow: 0 0 0 4px rgba(217, 119, 87, 0.08);
+  animation: toolbar-in 0.25s var(--ease-out);
+}
+
+#container-edit.hidden {
+  display: none;
+}
+
+#container-edit.mode-container {
+  cursor: move;
+}
+
+#container-edit.mode-character {
+  cursor: grab;
+  background: rgba(217, 119, 87, 0.03);
+}
+
+#container-edit.dragging {
+  border-style: solid;
+  background: rgba(217, 119, 87, 0.1);
+}
+
+#container-edit.mode-character.dragging {
+  cursor: grabbing;
+}
+
+/* Resize handles — container mode only. */
+#container-edit .ce-handle {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  background: var(--claude-surface);
+  border: 2px solid var(--claude-accent);
+  box-shadow: 0 2px 6px rgba(50, 44, 30, 0.25);
+  transition: transform 0.15s var(--spring);
+}
+
+#container-edit.mode-character .ce-handle {
+  display: none;
+}
+
+#container-edit .ce-handle:hover {
+  transform: scale(1.3);
+}
+
+/* The outline hugs the window edge, so the handles sit just INSIDE it —
+   anything outside the window is clipped and would be unreachable. */
+.ce-nw {
+  top: -4px;
+  left: -4px;
+  cursor: nwse-resize;
+}
+.ce-ne {
+  top: -4px;
+  right: -4px;
+  cursor: nesw-resize;
+}
+.ce-se {
+  bottom: -4px;
+  right: -4px;
+  cursor: nwse-resize;
+}
+.ce-sw {
+  bottom: -4px;
+  left: -4px;
+  cursor: nesw-resize;
+}
+.ce-n {
+  top: -4px;
+  left: 50%;
+  margin-left: -6px;
+  cursor: ns-resize;
+}
+.ce-s {
+  bottom: -4px;
+  left: 50%;
+  margin-left: -6px;
+  cursor: ns-resize;
+}
+.ce-e {
+  right: -4px;
+  top: 50%;
+  margin-top: -6px;
+  cursor: ew-resize;
+}
+.ce-w {
+  left: -4px;
+  top: 50%;
+  margin-top: -6px;
+  cursor: ew-resize;
+}
+
+/* Size/position hint shown while dragging. */
+#container-edit .ce-hint {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  display: none;
+  padding: 3px 9px;
+  border-radius: 8px;
+  background: var(--claude-surface);
+  border: 1px solid var(--claude-border);
+  color: var(--claude-ink);
+  font-size: 11px;
+  line-height: 1.4;
+  white-space: nowrap;
+  box-shadow: var(--shadow-float);
+  pointer-events: none;
+}
+
+#container-edit.dragging .ce-hint {
+  display: block;
+}

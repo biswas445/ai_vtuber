@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self' vtuber-model: data: blob:; img-src 'self' vtuber-model: data: blob:; media-src 'self' vtuber-model: data: blob: http: https:; connect-src 'self' vtuber-model: ws: wss: data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'"
+    />
+    <title>Companion</title>
+  </head>
+  <body>
+    <div id="stage-holder"></div>
+
+    <div id="controls" class="hidden" role="toolbar" aria-label="Companion controls">
+      <button id="btn-pin" class="active" title="Pin on top of everything" aria-label="Pin on top">
+        <span class="icon icon-on"><i data-lucide="pin"></i></span>
+        <span class="icon icon-off"><i data-lucide="pin-off"></i></span>
+      </button>
+      <button id="btn-model" title="Switch character (or double-click her)" aria-label="Switch character">
+        <span class="icon"><i data-lucide="refresh-cw"></i></span>
+      </button>
+      <button id="btn-bigger" title="Bigger" aria-label="Bigger">
+        <span class="icon"><i data-lucide="plus"></i></span>
+      </button>
+      <button id="btn-smaller" title="Smaller" aria-label="Smaller">
+        <span class="icon"><i data-lucide="minus"></i></span>
+      </button>
+      <button id="btn-track" class="active" title="Follow the cursor with her eyes" aria-label="Track mouse">
+        <span class="icon icon-on"><i data-lucide="mouse-pointer"></i></span>
+        <span class="icon icon-off"><i data-lucide="mouse-pointer-2-off"></i></span>
+      </button>
+      <button id="btn-edit" title="Resize window: drag inside to move it, edges/corners to resize" aria-label="Resize window">
+        <span class="icon"><i data-lucide="scan-box"></i></span>
+      </button>
+      <button id="btn-move" title="Move character: drag her to a new spot" aria-label="Move character">
+        <span class="icon"><i data-lucide="person-standing"></i></span>
+      </button>
+      <button id="btn-voice" class="active" title="Voice replies (TTS)" aria-label="Toggle voice replies">
+        <span class="icon icon-on"><i data-lucide="volume-2"></i></span>
+        <span class="icon icon-off"><i data-lucide="volume-x"></i></span>
+      </button>
+      <button id="btn-close" title="Exit (close the app)" aria-label="Exit">
+        <span class="icon"><i data-lucide="x"></i></span>
+      </button>
+    </div>
+
+    <div id="container-edit" class="hidden">
+      <span class="ce-hint"></span>
+      <div class="ce-handle ce-nw" data-handle="nw"></div>
+      <div class="ce-handle ce-n" data-handle="n"></div>
+      <div class="ce-handle ce-ne" data-handle="ne"></div>
+      <div class="ce-handle ce-e" data-handle="e"></div>
+      <div class="ce-handle ce-se" data-handle="se"></div>
+      <div class="ce-handle ce-s" data-handle="s"></div>
+      <div class="ce-handle ce-sw" data-handle="sw"></div>
+      <div class="ce-handle ce-w" data-handle="w"></div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
